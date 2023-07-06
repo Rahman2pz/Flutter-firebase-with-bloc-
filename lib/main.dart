@@ -2,13 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:using_firebase/app_bloc_observer.dart';
-import 'package:using_firebase/features/database/database_bloc.dart';
+import 'package:using_firebase/features/database/todo_bloc.dart';
+// import 'package:using_firebase/features/database/todo_bloc.dart';
 import 'package:using_firebase/firebase_options.dart';
 import 'package:using_firebase/repository/authentication_repository_impl.dart';
 import 'package:using_firebase/bloc_navigate.dart';
 import 'package:using_firebase/features/authentication/authentication_bloc.dart';
 import 'package:using_firebase/features/form_validation/form_bloc.dart';
 import 'package:using_firebase/repository/database_repository_impl.dart';
+import 'package:using_firebase/service/firstore_services.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +24,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return
-      // BlocOverrides.runZoned(
-      // () {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
@@ -35,10 +34,13 @@ class MyApp extends StatelessWidget {
               create: (context) => FormBloc(
                   AuthenticationRepositoryImpl(), DatabaseRepositoryImpl()),
             ),
+            BlocProvider<TodoBloc>(
+              create: (context) => TodoBloc(FirestoreService()),
+            ),
             //
-            BlocProvider(
-              create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
-            )
+            // BlocProvider(
+            //   create: (context) => DatabaseBloc(DatabaseRepositoryImpl()),
+            // )
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -50,8 +52,5 @@ class MyApp extends StatelessWidget {
             home: const BlocNavigate(),
           )
         );
-    //   },
-    //   blocObserver: AppBlocObserver(),
-    // );
   }
 }

@@ -85,7 +85,9 @@ class SignInView extends StatelessWidget {
                   SizedBox(height: size.height * 0.01),
                   const SubmitButton(),
                   const SignInNavigate(),
+                  SizedBox(height: size.height * 0.02,)
                 ]),
+
               ))),
     );
   }
